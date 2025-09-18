@@ -1,4 +1,9 @@
+//src/app/page.tsx
+
 import Image from "next/image";
+import SignInScreen from '@/components/SignInScreen';
+
+export default function Page(){ return <SignInScreen />; }
 
 export default function Home() {
   return (
