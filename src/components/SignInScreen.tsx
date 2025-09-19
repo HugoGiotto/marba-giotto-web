@@ -31,13 +31,20 @@ export default function SignInScreen() {
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-slate-900">
       {/* esquerda: vídeo */}
-      <div className="hidden md:block relative">
+      <div className="relative">
         <video
-          autoPlay muted loop playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/video-login.mp4"
+          className="h-48 w-full object-cover md:h-full" // topo 48 em mobile, full em desktop
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/images/login-poster.jpg" // opcional, fallback
+          // disableRemotePlayback // opcional
+          src="/videos/login-hero.mp4"
         />
-        <div className="absolute inset-0 bg-black/30" />
+        {/* overlay suave opcional */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/30 to-slate-950/0 md:bg-none" />
       </div>
 
       {/* direita: formulário */}
