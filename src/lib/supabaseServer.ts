@@ -2,8 +2,9 @@
 import { cookies, headers } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
-export function createSupabaseServer() {
-  const cookieStore = cookies();
+export async function createSupabaseServer() {
+  const cookieStore = await cookies();   // Next 15: async
+  const hdrs = await headers();          // Next 15: pode ser async conforme contexto
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,7 +15,7 @@ export function createSupabaseServer() {
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          // Next 15: API por objeto
+          // API em objeto no Next 15
           cookieStore.set({ name, value, ...options });
         },
         remove(name: string, options: CookieOptions) {
@@ -25,7 +26,9 @@ export function createSupabaseServer() {
         ? { functions: { url: process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL } }
         : {}),
       global: {
-        headers: { 'x-forwarded-host': headers().get('host') ?? '' },
+        headers: {
+          'x-forwarded-host': hdrs.get('host') ?? '',
+        },
       },
     }
   );
