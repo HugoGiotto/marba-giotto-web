@@ -41,7 +41,7 @@ export default function SignInScreen() {
           preload="metadata"
           poster="/images/login-poster.jpg" // opcional, fallback
           // disableRemotePlayback // opcional
-          src="/videos/login-hero.mp4"
+          src="/videos/video-login.mp4"
         />
         {/* overlay suave opcional */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/30 to-slate-950/0 md:bg-none" />
