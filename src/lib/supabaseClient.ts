@@ -25,3 +25,9 @@ if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
   // eslint-disable-next-line no-console
   console.info('[supabase] URL em uso:', supabaseUrl);
 }
+
+// no final do arquivo
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+  // eslint-disable-next-line no-console
+  console.info('[supabase] URL em uso:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+}
