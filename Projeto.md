@@ -83,27 +83,6 @@ curl -X PATCH "https://uujvwpcpnbvfgvcqvgql.supabase.co/auth/v1/admin/users/$USE
 
 
 
-
-SERVICE_ROLE='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzUxMTQ1OSwiZXhwIjoyMDczMDg3NDU5fQ.O-3acntEAc_CCNSGE7TS-7YKDEdxWz0CHJvxAq5TcFY'
-USER_ID='66631655-f571-40f3-b042-ac9500f6187c'
-curl -X PATCH "https://uujvwpcpnbvfgvcqvgql.supabase.co/auth/v1/admin/users/$USER_ID" \
-  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzUxMTQ1OSwiZXhwIjoyMDczMDg3NDU5fQ.O-3acntEAc_CCNSGE7TS-7YKDEdxWz0CHJvxAq5TcFY" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzUxMTQ1OSwiZXhwIjoyMDczMDg3NDU5fQ.O-3acntEAc_CCNSGE7TS-7YKDEdxWz0CHJvxAq5TcFY" \
-  -H "Content-Type: application/json" \
-  -d '{"password":"Mg@41540@"}'
-
-
-
-
-PROJECT_REF=uujvwpcpnbvfgvcqvgql
-SERVICE_ROLE='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzUxMTQ1OSwiZXhwIjoyMDczMDg3NDU5fQ.O-3acntEAc_CCNSGE7TS-7YKDEdxWz0CHJvxAq5TcFY'
-USER_ID='66631655-f571-40f3-b042-ac9500f6187c'
-
-curl -sS -X DELETE "https://$PROJECT_REF.supabase.co/auth/v1/admin/users/$USER_ID" \
-  -H "apikey: $SERVICE_ROLE" -H "Authorization: Bearer $SERVICE_ROLE"
-
-
-
 ========
 
 

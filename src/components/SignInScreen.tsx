@@ -13,29 +13,36 @@ export default function SignInScreen() {
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
-    if (!email || !password) {
+
+    const emailClean = email.trim().toLowerCase();
+    if (!emailClean || !password) {
       setErr('Informe e-mail e senha.');
       return;
     }
+
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: emailClean,
+        password,
+      });
+
       if (error) {
-        const msg = error.message?.toLowerCase() ?? '';
-        if (msg.includes('invalid')) {
-          setErr('E-mail ou senha inválidos.');
-        } else {
-          setErr(error.message || 'Erro ao entrar.');
-        }
+        const msg = (error.message || '').toLowerCase();
+        setErr(
+          msg.includes('invalid')
+            ? 'E-mail ou senha inválidos.'
+            : msg.includes('confirm')
+            ? 'E-mail não confirmado. Verifique sua caixa de entrada.'
+            : 'Erro ao entrar.'
+        );
         return;
       }
-      // sucesso: você pode redirecionar ou recarregar a página
-      // window.location.href = '/dashboard';
-      window.location.reload();
-    } catch (e: unknown) {
-      // Falhas de rede ou CORS
+
+      // sucesso
+      window.location.reload(); // ou: router.push('/dashboard')
+    } catch {
       setErr('Não foi possível conectar ao servidor. Tente novamente.');
-      // opcional: console.error(e);
     } finally {
       setLoading(false);
     }
@@ -43,18 +50,25 @@ export default function SignInScreen() {
 
   async function handleSignUp() {
     setErr(null);
-    if (!email || !password) {
+
+    const emailClean = email.trim().toLowerCase();
+    if (!emailClean || !password) {
       setErr('Informe e-mail e senha.');
       return;
     }
+
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({
+        email: emailClean,
+        password,
+      });
+
       if (error) {
         setErr(error.message || 'Erro ao criar conta.');
         return;
       }
-      // Se “Auto-confirm” estiver ON no Supabase, já pode logar.
+
       setErr('Conta criada! Verifique seu e-mail (se necessário) e faça login.');
     } catch {
       setErr('Não foi possível conectar ao servidor. Tente novamente.');
@@ -68,17 +82,15 @@ export default function SignInScreen() {
       {/* esquerda: vídeo */}
       <div className="relative">
         <video
-          className="h-48 w-full object-cover md:h-full" // topo 48 em mobile, full em desktop
+          className="h-48 w-full object-cover md:h-full"
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
-          poster="/images/login-poster.jpg" // opcional, fallback
-          // disableRemotePlayback // opcional
+          poster="/images/login-poster.jpg"
           src="/videos/video-login.mp4"
         />
-        {/* overlay suave opcional */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/30 to-slate-950/0 md:bg-none" />
       </div>
 
