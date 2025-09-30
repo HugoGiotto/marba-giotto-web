@@ -182,3 +182,16 @@ export default function SignInScreen() {
 
 
 ========
+
+
+
+
+
+
+mkdir -p tmp-icons
+magick convert tmp-icons/icon-256.png src/app/favicon.ico
+
+magick convert icon-256.png favicon.ico
+mv favicon.ico src/app/favicon.ico
+
+
