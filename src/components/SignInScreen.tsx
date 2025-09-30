@@ -1,76 +1,120 @@
 //src/components/SignInScreen.tsx
 'use client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+
+import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SignInScreen() {
-  const router = useRouter();
-  const [email, setEmail] = useState(''); 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [err, setErr] = useState<string|undefined>();
+  const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) router.replace('/dashboard');
-    });
-  }, [router]);
+  async function handleSignIn(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    if (!email || !password) {
+      setErr('Informe e-mail e senha.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        const msg = error.message?.toLowerCase() ?? '';
+        if (msg.includes('invalid')) {
+          setErr('E-mail ou senha inválidos.');
+        } else {
+          setErr(error.message || 'Erro ao entrar.');
+        }
+        return;
+      }
+      // sucesso: você pode redirecionar ou recarregar a página
+      // window.location.href = '/dashboard';
+      window.location.reload();
+    } catch (e: unknown) {
+      // Falhas de rede ou CORS
+      setErr('Não foi possível conectar ao servidor. Tente novamente.');
+      // opcional: console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  const signIn = async () => {
-    setErr(undefined);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setErr(error.message); else router.replace('/dashboard');
-  };
-
-  const signUp = async () => {
-    setErr(undefined);
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) setErr(error.message); else router.replace('/dashboard');
-  };
+  async function handleSignUp() {
+    setErr(null);
+    if (!email || !password) {
+      setErr('Informe e-mail e senha.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        setErr(error.message || 'Erro ao criar conta.');
+        return;
+      }
+      // Se “Auto-confirm” estiver ON no Supabase, já pode logar.
+      setErr('Conta criada! Verifique seu e-mail (se necessário) e faça login.');
+    } catch {
+      setErr('Não foi possível conectar ao servidor. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2 bg-slate-900">
-      {/* esquerda: vídeo */}
+    <div className="grid min-h-dvh grid-cols-1 md:grid-cols-2 bg-slate-900">
+      {/* Coluna do vídeo/imagem à esquerda — mantenha como já está */}
       <div className="relative">
-        <video
-          className="h-48 w-full object-cover md:h-full" // topo 48 em mobile, full em desktop
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/images/login-poster.jpg" // opcional, fallback
-          // disableRemotePlayback // opcional
-          src="/videos/video-login.mp4"
-        />
-        {/* overlay suave opcional */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/30 to-slate-950/0 md:bg-none" />
+        {/* ... seu <video> ou <img> ... */}
       </div>
 
-      {/* direita: formulário */}
-      <div className="flex items-center justify-center p-8">
-        <div className="w-full max-w-sm bg-slate-800/70 border border-slate-700 rounded-2xl p-6">
-          <h1 className="text-center text-2xl font-bold text-slate-100 mb-6">Marba Giotto – Acesso</h1>
-          {!!err && <div className="text-red-400 text-sm mb-3">{err}</div>}
+      {/* Formulário */}
+      <div className="flex items-center justify-center p-6 md:p-10">
+        <form onSubmit={handleSignIn} className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-800/40 p-6">
+          <h1 className="mb-4 text-2xl font-semibold text-white">Marba Giotto – Acesso</h1>
 
-          <label className="block text-slate-300 text-sm">E-mail</label>
+          {err && <p className="mb-3 text-sm text-red-400">{err}</p>}
+
+          <label className="mb-1 block text-sm text-slate-200">E-mail</label>
           <input
-            className="w-full mt-1 mb-3 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 outline-none"
-            value={email} onChange={e=>setEmail(e.target.value)} placeholder="voce@email.com"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mb-3 w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-emerald-500"
+            placeholder="voce@email.com"
+            autoComplete="email"
           />
 
-          <label className="block text-slate-300 text-sm">Senha</label>
+          <label className="mb-1 block text-sm text-slate-200">Senha</label>
           <input
             type="password"
-            className="w-full mt-1 mb-4 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 outline-none"
-            value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-4 w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-emerald-500"
+            placeholder="••••••••"
+            autoComplete="current-password"
           />
 
           <div className="flex gap-3">
-            <button onClick={signIn} className="flex-1 py-2 rounded-lg bg-emerald-500 font-semibold text-slate-900">Entrar</button>
-            <button onClick={signUp} className="flex-1 py-2 rounded-lg bg-slate-700 font-semibold text-slate-100">Criar conta</button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
+            >
+              {loading ? 'Entrando…' : 'Entrar'}
+            </button>
+            <button
+              type="button"
+              onClick={handleSignUp}
+              disabled={loading}
+              className="flex-1 rounded-md bg-slate-700 px-4 py-2 font-medium text-slate-100 disabled:opacity-60"
+            >
+              Criar conta
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
