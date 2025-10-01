@@ -56,7 +56,8 @@ export default function DashboardApp({ userId }: { userId: string }) {
   // timer
   const [runningMs, setRunningMs] = useState(0);
   const startRef = useRef<number | null>(null);
-  const tickRef = useRef<any>(null);
+  const tickRef  = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
   const piece = useMemo(() => pieces.find(p => p.id === selected) || null, [pieces, selected]);
   const pieceSessions = useMemo(() => sessions.filter(s => s.piece_id === selected), [sessions, selected]);
@@ -145,18 +146,34 @@ export default function DashboardApp({ userId }: { userId: string }) {
   function startTimer() {
     if (startRef.current != null) return;
     startRef.current = Date.now();
-  }
+    // inicia o loop aqui
+    tickRef.current = setInterval(() => {
+        if (startRef.current != null) {
+        setRunningMs(Date.now() - startRef.current);
+        }
+    }, 200);
+    }
 
-  function pauseTimer() {
+    function pauseTimer() {
     if (startRef.current == null) return;
     setRunningMs(Date.now() - startRef.current);
     startRef.current = null;
-  }
+    if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+    }
 
-  function resetTimer() {
+    function resetTimer() {
+    if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
     startRef.current = null;
     setRunningMs(0);
-  }
+    }
+
+    // mantém só a limpeza no unmount
+    useEffect(() => {
+    return () => {
+        if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+    };
+    }, []);
+
 
   async function endSession() {
     const now = Date.now();
