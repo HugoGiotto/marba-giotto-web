@@ -1,10 +1,9 @@
 // src/app/admin/actions.ts
 'use server';
-
 import { createSupabaseServer } from '@/lib/supabaseServer';
 
 export async function getUserProfile() {
-  const supabase = await createSupabaseServer();
+  const supabase = await createSupabaseServer(); // <- COM await
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
