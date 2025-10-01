@@ -2,9 +2,9 @@
 import { getServerSupabase } from '@/lib/supabaseServer';
 
 export default async function Dashboard() {
-  const supabase = getServerSupabase();
-  const { data: { user } } = await supabase.auth.getUser();
+  const supabase = await getServerSupabase();
 
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return <div className="p-6 text-slate-100">Você precisa estar logado.</div>;
   }
