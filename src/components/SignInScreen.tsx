@@ -40,7 +40,7 @@ export default function SignInScreen() {
       }
 
       // sucesso
-      window.location.reload(); // ou: router.push('/dashboard')
+    window.location.href = '/dashboard';  // ou: router.push('/dashboard')
     } catch {
       setErr('Não foi possível conectar ao servidor. Tente novamente.');
     } finally {
