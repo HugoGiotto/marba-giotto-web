@@ -1,10 +1,18 @@
-// app/admin/actions.ts
+// src/app/admin/actions.ts
 'use server';
+
 import { createSupabaseServer } from '@/lib/supabaseServer';
 
 export async function getUserProfile() {
   const supabase = await createSupabaseServer();
-  const { data, error } = await supabase.from('profiles').select('*').single();
-  if (error) throw error;
-  return data;
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('name, role')
+    .eq('id', user.id)
+    .single();
+
+  return { user, profile };
 }

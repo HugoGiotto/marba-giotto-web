@@ -3,8 +3,9 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
-export function getServerSupabase() {
-  const store = cookies();
+export async function getServerSupabase() {
+  // Next 15: em Server Actions cookies() é Promise
+  const store = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,5 +26,5 @@ export function getServerSupabase() {
   );
 }
 
-// alias para compatibilidade com código antigo:
+// Alias p/ código legado que ainda importa createSupabaseServer
 export const createSupabaseServer = getServerSupabase;
