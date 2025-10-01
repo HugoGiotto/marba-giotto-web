@@ -1,14 +1,14 @@
 // src/lib/supabaseServer.ts
 import 'server-only';
 import { cookies } from 'next/headers';
-import { createClient, type CookieOptions } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export function getServerSupabase() {
   const store = cookies();
 
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,        // já definidas no Vercel
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,   // e no .env.local
     {
       cookies: {
         get(name: string) {
