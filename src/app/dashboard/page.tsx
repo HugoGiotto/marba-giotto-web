@@ -3,12 +3,11 @@ import { redirect } from 'next/navigation';
 import { getServerSupabase } from '@/lib/supabaseServer';
 
 export default async function Dashboard() {
-  const supabase = getServerSupabase();
+  const supabase = await getServerSupabase(); // <<<<<<<<<<<<<< AQUI TEM QUE TER AWAIT
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    // se não estiver logado, mande para a home (ou /login)
-    redirect('/');
+    redirect('/'); // ou renderize mensagem se preferir
   }
 
   const { data: profile } = await supabase
