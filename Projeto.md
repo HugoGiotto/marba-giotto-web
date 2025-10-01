@@ -10,6 +10,10 @@ git commit -m "deploy"
 git push origin main
 
 
+ateliemarbagiotto@gmail.com
+Mg@41540@
+
+
 Deploy direto pelo Vercel CLI (manual)
 # 1) vincule a pasta ao projeto (já está, mas deixo o comando)
 npx vercel link --scope hugogiottos-projects --project marba-giotto-web
