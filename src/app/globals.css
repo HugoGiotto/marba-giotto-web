@@ -1,9 +1,18 @@
+
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root{
+  --bg:#151311;
+  --surface:#1f1b18;
+  --ink:#f4efe9;
+  --muted:#cfc7bd;
+  --border:rgba(255,255,255,.08);
+  --accent:#d6b692;   /* areia/dourado suave */
+  --accent-2:#a68b6a; /* marrom claro */
 }
+
+html,body{ background:linear-gradient(180deg,#1b1714,#151311 40%,#1b1714); color:var(--ink); }
 
 @theme inline {
   --color-background: var(--background);
