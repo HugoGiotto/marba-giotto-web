@@ -1,10 +1,9 @@
 // src/lib/supabaseServer.ts
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
-export async function createSupabaseServer() {
-  const cookieStore = await cookies();   // Next 15: async
-  const hdrs = await headers();          // Next 15: pode ser async conforme contexto
+export function createServerSupabase() {
+  const cookieStore = cookies(); // Readonly no Server Component
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,21 +13,9 @@ export async function createSupabaseServer() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options: CookieOptions) {
-          // API em objeto no Next 15
-          cookieStore.set({ name, value, ...options });
-        },
-        remove(name: string, options: CookieOptions) {
-          cookieStore.set({ name, value: '', ...options, maxAge: 0 });
-        },
-      },
-      ...(process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL
-        ? { functions: { url: process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL } }
-        : {}),
-      global: {
-        headers: {
-          'x-forwarded-host': hdrs.get('host') ?? '',
-        },
+        // no Server Component não dá pra mutar cookies; deixamos no-op
+        set(_name: string, _value: string, _options: CookieOptions) {},
+        remove(_name: string, _options: CookieOptions) {},
       },
     }
   );

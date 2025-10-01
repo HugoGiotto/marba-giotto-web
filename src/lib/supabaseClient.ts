@@ -1,30 +1,27 @@
 // src/lib/supabaseClient.ts
-import { createBrowserClient } from '@supabase/ssr';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!url || !anon) {
-  throw new Error('Faltam NEXT_PUBLIC_SUPABASE_URL ou NEXT_PUBLIC_SUPABASE_ANON_KEY');
-}
+// estes 3 precisam existir em Vercel (.env) e em .env.local para dev
+const url  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const fn   = process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL; // opcional
 
 let client: SupabaseClient | undefined;
 
-export function getSupabaseClient() {
-  if (!client) {
-    client = createBrowserClient(url, anon, {
-      cookies: { // browser: `@supabase/ssr` cuida do storage de sessão/cookies
-        get() { return null; }, set() {}, remove() {},
-      },
-    });
-  }
+export function getSupabaseClient(): SupabaseClient {
+  if (client) return client;
+
+  client = createClient(url, anon, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+    ...(fn ? { functions: { url: fn } } : {}),
+  });
+
   return client;
 }
 
 export const supabase = getSupabaseClient();
 
-// debug opcional em dev
+// debug só no dev (não derruba a página em prod)
 if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
   // eslint-disable-next-line no-console
   console.info('[supabase] URL em uso:', url);
