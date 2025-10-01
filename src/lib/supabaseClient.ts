@@ -1,37 +1,31 @@
 // src/lib/supabaseClient.ts
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-// Helper que garante string (e dá erro claro se faltar)
-function requiredEnv(name: 'NEXT_PUBLIC_SUPABASE_URL' | 'NEXT_PUBLIC_SUPABASE_ANON_KEY'): string {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing env ${name}`);
-  return v;
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!url || !anon) {
+  throw new Error('Faltam NEXT_PUBLIC_SUPABASE_URL ou NEXT_PUBLIC_SUPABASE_ANON_KEY');
 }
 
-const supabaseUrl = requiredEnv('NEXT_PUBLIC_SUPABASE_URL');
-const supabaseAnonKey = requiredEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY');
-const supabaseFunctionsUrl = process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL; // opcional
+let client: SupabaseClient | undefined;
 
-let browserClient: SupabaseClient | undefined;
-
-export function getSupabaseClient(): SupabaseClient {
-  if (browserClient) return browserClient;
-
-  browserClient = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
-    ...(supabaseFunctionsUrl ? { functions: { url: supabaseFunctionsUrl } } : {}),
-  });
-
-  return browserClient;
+export function getSupabaseClient() {
+  if (!client) {
+    client = createBrowserClient(url, anon, {
+      cookies: { // browser: `@supabase/ssr` cuida do storage de sessão/cookies
+        get() { return null; }, set() {}, remove() {},
+      },
+    });
+  }
+  return client;
 }
 
 export const supabase = getSupabaseClient();
 
-// Debug só em dev
+// debug opcional em dev
 if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
-  console.info('[supabase] URL em uso:', supabaseUrl);
+  // eslint-disable-next-line no-console
+  console.info('[supabase] URL em uso:', url);
 }

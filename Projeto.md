@@ -64,24 +64,32 @@ Opção B — Manter estático no mobile (imagem) e vídeo só no desktop
 </div>
 
 
-ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTE0NTksImV4cCI6MjA3MzA4NzQ1OX0.Zu4qnWbDycxG13cHuOncBS0LH_yvsIttIDZYe7JGG_M'
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTE0NTksImV4cCI6MjA3MzA4NzQ1OX0.Zu4qnWbDycxG13cHuOncBS0LH_yvsIttIDZYe7JGG_M
 
 
 curl -i -X POST 'https://uujvwpcpnbvfgvcqvgql.supabase.co/auth/v1/token?grant_type=password' \
   -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTE0NTksImV4cCI6MjA3MzA4NzQ1OX0.Zu4qnWbDycxG13cHuOncBS0LH_yvsIttIDZYe7JGG_M' \
   -H 'Content-Type: application/json' \
-  -d '{"email":"ateliemabagiotto@gmail.com","password":"Mg@41540@"}'
+  -d '{"email":"ateliemarbagiotto@gmail.com","password":"Mg@41540@"}'
 
 
-SERVICE_ROLE='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1anZ3cGNwbmJ2Zmd2Y3F2Z3FsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzUxMTQ1OSwiZXhwIjoyMDczMDg3NDU5fQ.O-3acntEAc_CCNSGE7TS-7YKDEdxWz0CHJvxAq5TcFY'
-USER_ID='66631655-f571-40f3-b042-ac9500f6187c'
 
-curl -X PATCH "https://uujvwpcpnbvfgvcqvgql.supabase.co/auth/v1/admin/users/$USER_ID" \
-  -H "apikey: $SERVICE_ROLE" -H "Authorization: Bearer $SERVICE_ROLE" \
+
+
+
+export USER_ID='5b7bbffd-cf73-4b1c-bf95-419686252f2e'
+
+curl -sS -X POST "https://${PROJECT_REF}.supabase.co/rest/v1/profiles" \
+  -H "apikey: ${SERVICE_ROLE}" \
+  -H "Authorization: Bearer ${SERVICE_ROLE}" \
   -H "Content-Type: application/json" \
-  -d '{"password": "Mg@41540@"}'
-
-
+  -H "Prefer: return=representation" \
+  -d "{
+    \"id\": \"${USER_ID}\",
+    \"email\": \"ateliemarbagiotto@gmail.com\",
+    \"name\": \"Ateliê Marba Giotto\",
+    \"role\": \"user\"
+  }"
 
 ========
 
