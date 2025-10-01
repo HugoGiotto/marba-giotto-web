@@ -1,21 +1,26 @@
 // src/lib/supabaseServer.ts
-import { cookies } from 'next/headers';
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
-export function createServerSupabase() {
-  const cookieStore = cookies(); // Readonly no Server Component
+import 'server-only';
+import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
+
+export function getServerSupabase() {
+  const cookieStore = cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,        // já definidos na Vercel
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,   // idem
     {
       cookies: {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        // no Server Component não dá pra mutar cookies; deixamos no-op
-        set(_name: string, _value: string, _options: CookieOptions) {},
-        remove(_name: string, _options: CookieOptions) {},
+        set(name: string, value: string, options: any) {
+          cookieStore.set({ name, value, ...options });
+        },
+        remove(name: string, options: any) {
+          cookieStore.set({ name, value: '', ...options });
+        },
       },
     }
   );

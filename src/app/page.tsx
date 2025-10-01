@@ -1,12 +1,15 @@
 // src/app/dashboard/page.tsx
 import { redirect } from 'next/navigation';
-import { createServerSupabase } from '@/lib/supabaseServer';
+import { getServerSupabase } from '@/lib/supabaseServer';
 
 export default async function Dashboard() {
-  const supabase = createServerSupabase();
+  const supabase = getServerSupabase();
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/'); // ou renderize um aviso, como preferir
+  if (!user) {
+    // se não estiver logado, mande para a home (ou /login)
+    redirect('/');
+  }
 
   const { data: profile } = await supabase
     .from('profiles')
