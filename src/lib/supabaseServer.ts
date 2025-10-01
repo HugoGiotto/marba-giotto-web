@@ -7,8 +7,8 @@ export function getServerSupabase() {
   const store = cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,        // já definidas no Vercel
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,   // e no .env.local
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
@@ -24,3 +24,6 @@ export function getServerSupabase() {
     }
   );
 }
+
+// alias para compatibilidade com código antigo:
+export const createSupabaseServer = getServerSupabase;
