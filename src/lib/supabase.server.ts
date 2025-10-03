@@ -4,8 +4,8 @@ import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export async function getServerSupabase() {
-  // cookies() pode ser Promise em Next 15 → aguardamos e tipamos como any pra evitar erros de TS quando for readonly
-  const cookieStore = (await cookies()) as any;
+  // No Next 15, usar await aqui evita o erro de Promise<ReadonlyRequestCookies>
+  const cookieStore = await cookies();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,15 +13,11 @@ export async function getServerSupabase() {
     {
       cookies: {
         get(name: string) {
-          return cookieStore?.get?.(name)?.value;
+          return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options: CookieOptions) {
-          // Em RSC pode ser readonly: ignore se não puder escrever
-          try { cookieStore?.set?.(name, value, options); } catch {}
-        },
-        remove(name: string, options: CookieOptions) {
-          try { cookieStore?.set?.(name, '', { ...options, maxAge: 0 }); } catch {}
-        },
+        // Em RSC o cookie store é somente-leitura; no-op aqui já atende o SSR.
+        set(_name: string, _value: string, _options: CookieOptions) {},
+        remove(_name: string, _options: CookieOptions) {},
       },
     }
   );
@@ -29,7 +25,7 @@ export async function getServerSupabase() {
   return supabase;
 }
 
-// compat
+// compat com código antigo
 export async function createSupabaseServer() {
   return getServerSupabase();
 }
