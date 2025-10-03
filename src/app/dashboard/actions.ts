@@ -1,9 +1,8 @@
-//src/app/dashboard/actions.ts
-
+// src/app/dashboard/actions.ts
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { getServerSupabase } from '@/lib/supabaseServer';
+import { getServerSupabase } from '@/lib/supabase.server'; // << AQUI: arquivo .server.ts
 
 export async function createPieceAction(formData: FormData) {
   const name = String(formData.get('name') || '').trim();
@@ -19,7 +18,7 @@ export async function createPieceAction(formData: FormData) {
   await supabase.from('pieces').insert({
     user_id: user.id,
     name,
-    description,
+    description: description || null,
     client_email: clientEmail || null,
   });
 
@@ -34,6 +33,7 @@ export async function startTimerAction(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
+  // se já houver uma entrada aberta, não cria outra
   const { data: active } = await supabase
     .from('time_entries')
     .select('id')
@@ -74,7 +74,7 @@ export async function stopTimerAction(formData: FormData) {
 export async function addMinutesAction(formData: FormData) {
   const pieceId = String(formData.get('piece_id') || '');
   const minutes = Number(formData.get('minutes') || 0);
-  if (!pieceId || !minutes || minutes <= 0) return;
+  if (!pieceId || !minutes || minutes <= 0 || Number.isNaN(minutes)) return;
 
   const supabase = await getServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
@@ -97,24 +97,30 @@ export async function saveMeasurementsAction(formData: FormData) {
   const pieceId = String(formData.get('piece_id') || '');
   if (!pieceId) return;
 
-  const width = formData.get('width');     // podem vir vazios -> null
+  const width = formData.get('width');
   const height = formData.get('height');
   const diameter = formData.get('diameter');
   const length = formData.get('length');
-  const notes = String(formData.get('notes') || '').trim();
+  const unit = String(formData.get('unit') || 'cm');
 
   const supabase = await getServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await supabase.from('measurements').upsert({
-    piece_id: pieceId,
-    width: width ? Number(width) : null,
-    height: height ? Number(height) : null,
-    diameter: diameter ? Number(diameter) : null,
-    length: length ? Number(length) : null,
-    notes: notes || null,
-  }, { onConflict: 'piece_id' });
+  // sua tabela `measurements` tem PK em piece_id (1:1), então o upsert com onConflict:'piece_id' funciona
+  await supabase
+    .from('measurements')
+    .upsert(
+      {
+        piece_id: pieceId,
+        width: width ? Number(width) : null,
+        height: height ? Number(height) : null,
+        diameter: diameter ? Number(diameter) : null,
+        length: length ? Number(length) : null,
+        unit: unit || 'cm',
+      },
+      { onConflict: 'piece_id' }
+    );
 
   revalidatePath('/dashboard');
 }
