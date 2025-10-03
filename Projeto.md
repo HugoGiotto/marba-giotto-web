@@ -117,3 +117,4 @@ magick convert icon-256.png favicon.ico
 mv favicon.ico src/app/favicon.ico
 
 
+O vídeo está grande, poderia diminuir, talvez colocar em um form com duas colunas esquerda o vídeo e direita login
