@@ -1,9 +1,12 @@
+// src/lib/supabase.server.ts
+
 import 'server-only';
 import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export async function getServerSupabase() {
-  const store = await cookies(); // OK em RSC e em actions
+  // Next 15: cookies() é async em Server Actions/Server Components
+  const store = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -24,5 +27,5 @@ export async function getServerSupabase() {
   );
 }
 
-// alias p/ código legado
+// Alias p/ código legado
 export const createSupabaseServer = getServerSupabase;
