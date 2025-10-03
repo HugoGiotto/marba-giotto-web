@@ -4,8 +4,7 @@ import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export async function getServerSupabase() {
-  // Em Server Components/Actions do Next 15, cookies() pode ser assíncrono
-  const store = await cookies();
+  const store = await cookies(); // Next 15: Promise
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -26,5 +25,5 @@ export async function getServerSupabase() {
   );
 }
 
-// Alias p/ código legado que ainda usa esse nome
+// opcional para legado:
 export const createSupabaseServer = getServerSupabase;

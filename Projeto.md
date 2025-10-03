@@ -118,3 +118,10 @@ mv favicon.ico src/app/favicon.ico
 
 
 O vídeo está grande, poderia diminuir, talvez colocar em um form com duas colunas esquerda o vídeo e direita login
+
+
+
+
+grep -R "from '@/lib/supabaseServer'" src
+
+grep -R "from '@/lib'" src | grep -v "from '@/lib/supabaseClient'" | grep -v "from '@/lib/supabase.server'"
