@@ -12,6 +12,7 @@ import {
   type MeasurementVals,
 } from '@/lib/measurements';
 
+type DashboardAppProps = { userId?: string };
 type Piece = { id: string; name: string };
 type PieceSession = {
   id: string;
@@ -45,12 +46,14 @@ function fileExt(name: string) {
   return m ? m[1] : 'jpg';
 }
 
-export default function DashboardApp() {
-  // auth (para paths no storage, se desejar usar privado no futuro)
-  const [userId, setUserId] = useState<string | null>(null);
+export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) {
+  // se vier via prop, usa; senão busca no client
+  const [userId, setUserId] = useState<string | null>(userIdProp ?? null);
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
-  }, []);
+    if (!userIdProp) {
+      supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
+    }
+  }, [userIdProp]);
 
   // pieces
   const [pieces, setPieces] = useState<Piece[]>([]);
