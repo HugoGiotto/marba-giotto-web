@@ -1,15 +1,11 @@
-// src/app/dashboard/page.tsx
-
+// src/app/dashboard/page.tsx (Server Component)
 import { redirect } from 'next/navigation';
-import { getServerSupabase } from '@/lib/supabase.server'; 
+import { getServerSupabase } from '@/lib/supabase.server';
 import DashboardApp from '@/components/DashboardApp';
-
 
 export default async function Dashboard() {
   const supabase = await getServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/');
-
-    return <DashboardApp />;
-
+  return <DashboardApp />;
 }
