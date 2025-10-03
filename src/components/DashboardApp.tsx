@@ -247,7 +247,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
 
     if (error) { alert('Erro ao criar peça.'); return; }
 
-    await ensureMeasurementRow(supabase, data.id, 'cm');
+    await ensureMeasurementRow(supabase, data.id);
     setPieces((curr) => [data, ...curr]);
     setSelectedId(data.id);
     setNewName('');
