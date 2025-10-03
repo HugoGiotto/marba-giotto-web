@@ -1,17 +1,11 @@
 // src/lib/supabaseClient.ts
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-const url  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-let client: SupabaseClient | undefined;
-
-export function getSupabaseClient(): SupabaseClient {
-  if (client) return client;
-  client = createClient(url, anon, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-  });
-  return client;
+if (!url || !anonKey) {
+  throw new Error('Env vars do Supabase faltando: defina NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY.');
 }
 
-export const supabase = getSupabaseClient();
+export const supabase = createClient(url, anonKey);
