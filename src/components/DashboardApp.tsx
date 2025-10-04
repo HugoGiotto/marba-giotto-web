@@ -369,7 +369,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
             {pieces.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
           <div className="ml-auto text-sm text-slate-300">
-            Total acumulado: <span className="font-semibold text-slate-100">{fmtHMS(totalMs)}</span>
+            Total acumulado: <span className="font-semibold text-[var(--muted)]">{fmtHMS(totalMs)}</span>
           </div>
           <button onClick={openDossier} className="rounded-md border border-white/15 px-3 py-2 text-sm">
             Dossiê (imprimir)
@@ -388,7 +388,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={handleStart}
                 disabled={running}
-                className="rounded-md bg-[#a7a896] px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
+                className="rounded-md bg-[#b6b5a2] px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
               >
                 Iniciar
               </button>
@@ -412,7 +412,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={handleStageWithPhotoClick}
                 disabled={accMs <= 0}
-                className="rounded-md bg-blue-500/80 px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2"
+                className="rounded-md bg-[#78563b] px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2"
               >
                 Finalizar etapa (com foto)
               </button>
@@ -459,7 +459,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
                 <option value="cm">cm</option><option value="mm">mm</option><option value="m">m</option><option value="pol">pol</option>
               </select>
               <div className="flex items-center">
-                <button onClick={handleSaveMeasures} className="rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900">Salvar medidas</button>
+                <button onClick={handleSaveMeasures} className="rounded-md bg-[#3a2216] px-4 py-2 font-medium text-slate-900">Salvar medidas</button>
               </div>
             </div>
           </div>

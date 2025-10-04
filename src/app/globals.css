@@ -13,12 +13,12 @@
 
   /* acentos */
   --brand:     #C9A46B; /* honeyed amber */
-  --brand-2:   #9FA19C; /* sage cinza */
+  --brand-2:   #6c715b; /* sage cinza */
   --accent:    #847C5D; /* mossed bronze */
 
   /* estados */
   --success:   #6E8F6C; /* olive */
-  --warning:   #C99F6C; /* amber suave */
+  --warning:   #c6b192; /* amber suave */
   --info:      #A9A199; /* cinza-oliva */
   --danger:    #93463F; /* marrom-rosado */
 }
