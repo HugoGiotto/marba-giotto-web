@@ -125,3 +125,17 @@ O vídeo está grande, poderia diminuir, talvez colocar em um form com duas colu
 grep -R "from '@/lib/supabaseServer'" src
 
 grep -R "from '@/lib'" src | grep -v "from '@/lib/supabaseClient'" | grep -v "from '@/lib/supabase.server'"
+
+
+============
+
+begin;
+
+-- Se tiver objetos no bucket 'piece-photos', apague-os manualmente no Storage (UI) ou via API.
+-- Tabelas de atividade primeiro, depois 'pieces'.
+truncate table public.piece_sessions restart identity cascade;
+truncate table public.time_entries  restart identity cascade;
+truncate table public.measurements  restart identity cascade;
+truncate table public.pieces        restart identity cascade;
+
+commit;

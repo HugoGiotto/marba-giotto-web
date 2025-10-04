@@ -236,22 +236,27 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
 
   /* ---------------- Pieces ---------------- */
   async function handleCreatePiece() {
-    const name = newName.trim();
-    if (!name) return;
+  const name = newName.trim();
+  if (!name || !userId) return;
 
-    const { data, error } = await supabase
-      .from('pieces')
-      .insert({ name })
-      .select('id,name')
-      .single();
+  const { data, error } = await supabase
+    .from('pieces')
+    .insert({ name, user_id: userId })
+    .select('id,name')
+    .single();
 
-    if (error) { alert('Erro ao criar peça.'); return; }
-
-    await ensureMeasurementRow(supabase, data.id);
-    setPieces((curr) => [data, ...curr]);
-    setSelectedId(data.id);
-    setNewName('');
+  if (error || !data) { 
+    console.error(error);
+    alert('Erro ao criar peça.');
+    return;
   }
+
+  await ensureMeasurementRow(supabase, data.id); // sem "cm" extra
+  setPieces((curr) => [data, ...curr]);
+  setSelectedId(data.id);
+  setNewName('');
+}
+
 
   /* -------------- Measurements -------------- */
   async function handleSaveMeasures() {

@@ -1,7 +1,7 @@
 // src/components/SignInScreen.tsx
 'use client';
+
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SignInScreen() {
@@ -9,13 +9,15 @@ export default function SignInScreen() {
   const [password, setPassword] = useState('');
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
     const emailClean = email.trim().toLowerCase();
-    if (!emailClean || !password) return setErr('Informe e-mail e senha.');
+    if (!emailClean || !password) {
+      setErr('Informe e-mail e senha.');
+      return;
+    }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email: emailClean, password });
     setLoading(false);
@@ -28,32 +30,23 @@ export default function SignInScreen() {
       );
       return;
     }
-    router.replace('/dashboard'); // navega uma vez, sem loop
-  }
-
-  async function handleSignUp() {
-    setErr(null);
-    const emailClean = email.trim().toLowerCase();
-    if (!emailClean || !password) return setErr('Informe e-mail e senha.');
-    setLoading(true);
-    const { error } = await supabase.auth.signUp({ email: emailClean, password });
-    setLoading(false);
-    if (error) return setErr(error.message || 'Erro ao criar conta.');
-    setErr('Conta criada! Verifique seu e-mail e faça login.');
+    // deixa o servidor cuidar do redirect através da /dashboard
+    window.location.assign('/dashboard');
   }
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2 bg-[var(--bg)]">
-      {/* Vídeo à esquerda; menor no mobile */}
+    <div className="min-h-screen grid md:grid-cols-[minmax(0,1fr)_460px] bg-[var(--bg)]">
+      {/* Coluna do vídeo — escondido no mobile e mais estreito no desktop */}
       <div className="relative hidden md:block">
         <video
-          className="h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
           autoPlay muted loop playsInline preload="metadata"
           poster="/images/login-poster.jpg" src="/videos/video-login.mp4"
         />
+        <div className="pointer-events-none absolute inset-0 bg-black/25" />
       </div>
 
-      {/* Formulário à direita */}
+      {/* Coluna do formulário */}
       <div className="flex items-center justify-center p-6 md:p-10">
         <form onSubmit={handleSignIn} className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
           <h1 className="mb-4 text-2xl font-semibold text-stone-100">Marba Giotto – Acesso</h1>
@@ -61,25 +54,27 @@ export default function SignInScreen() {
           {err && <p className="mb-3 text-sm text-red-400">{err}</p>}
 
           <label className="mb-1 block text-sm text-stone-300">E-mail</label>
-          <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)}
+          <input
+            type="email" value={email} onChange={(e)=>setEmail(e.target.value)}
             className="mb-3 w-full rounded-md bg-stone-900 px-3 py-2 text-stone-100 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-amber-400"
-            placeholder="voce@email.com" autoComplete="email" />
+            placeholder="voce@email.com" autoComplete="email"
+          />
 
           <label className="mb-1 block text-sm text-stone-300">Senha</label>
-          <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}
-            className="mb-4 w-full rounded-md bg-stone-900 px-3 py-2 text-stone-100 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-amber-400"
-            placeholder="••••••••" autoComplete="current-password" />
+          <input
+            type="password" value={password} onChange={(e)=>setPassword(e.target.value)}
+            className="mb-6 w-full rounded-md bg-stone-900 px-3 py-2 text-stone-100 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-amber-400"
+            placeholder="••••••••" autoComplete="current-password"
+          />
 
-          <div className="flex gap-3">
-            <button type="submit" disabled={loading}
-              className="flex-1 rounded-md bg-amber-400 px-4 py-2 font-medium text-stone-950 disabled:opacity-60">
-              {loading ? 'Entrando…' : 'Entrar'}
-            </button>
-            <button type="button" onClick={handleSignUp} disabled={loading}
-              className="flex-1 rounded-md bg-stone-700 px-4 py-2 font-medium text-stone-100 disabled:opacity-60">
-              Criar conta
-            </button>
-          </div>
+          <button
+            type="submit" disabled={loading}
+            className="w-full rounded-md bg-amber-400 px-4 py-2 font-medium text-stone-950 disabled:opacity-60"
+          >
+            {loading ? 'Entrando…' : 'Entrar'}
+          </button>
+
+          {/* Sem botão de "Criar conta" por enquanto */}
         </form>
       </div>
     </div>
