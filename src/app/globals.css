@@ -1,33 +1,44 @@
 /* src/app/globals.css */
 @import "tailwindcss";
 
-/* Paleta base (terra + oliva + âmbar suave) */
+/* Paleta Crochê (claro, quente, orgânico) */
 :root{
-  --bg:#151311;           /* fundo escuro quente */
-  --surface:#1f1b18;      /* cartões/painéis */
-  --ink:#efe9df;          /* texto principal (marfim) */
-  --ink-weak:#cfc7bd;     /* texto secundário */
-  --ink-strong:#1a1714;   /* texto sobre botões claros */
+  /* base */
+  --bg:        #EFE9E3; /* ivory glow */
+  --surface:   #FFFFFF; /* cards */
+  --surface-2: #F6F1EB; /* secundário / barras */
+  --ink:       #2D2612; /* marrom-profundo */
+  --muted:     #7F7469; /* texto suave */
+  --line:      rgba(45,38,18,.12); /* linhas e rings */
 
-  --border:rgba(255,255,255,.08);
+  /* acentos */
+  --brand:     #C9A46B; /* honeyed amber */
+  --brand-2:   #9FA19C; /* sage cinza */
+  --accent:    #847C5D; /* mossed bronze */
 
-  /* acentos tirados das referências */
-  --accent:#c99e6c;       /* “honeyed amber” (#C99E6C) */
-  --accent-2:#847c5d;     /* oliva musgo (#847C5D) */
-  --accent-3:#d0c7b8;     /* areia clara (#D0C7B8) */
+  /* estados */
+  --success:   #6E8F6C; /* olive */
+  --warning:   #C99F6C; /* amber suave */
+  --info:      #A9A199; /* cinza-oliva */
+  --danger:    #93463F; /* marrom-rosado */
 }
 
-/* Fundo com leve gradiente quente */
+/* Fundo geral e cor de texto padrão */
 html,body{
-  background: linear-gradient(180deg,#1b1714,#151311 40%,#1b1714);
-  color:var(--ink);
-  min-height:100%;
+  background: linear-gradient(180deg, #F3EEE7, #EFE9E3 40%, #F3EEE7);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Opcional: coerência com shadcn/next defaults */
+/* Utilitários básicos (opcional, ajuda a padronizar) */
 :root{
-  --background: transparent;
+  --background: transparent; /* já temos gradient */
   --foreground: var(--ink);
 }
 
-body { font-family: Arial, Helvetica, sans-serif; }
+/* Ex.: inputs “escuros” sem ficar carvão */
+input, textarea, select{
+  background: var(--surface);
+  color: var(--ink);
+}

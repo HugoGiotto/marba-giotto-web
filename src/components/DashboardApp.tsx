@@ -334,20 +334,20 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="p-6 text-slate-100">
+    <div className="p-6 text-[var(--ink)]">
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
       {/* Nova peça */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-6">
+      <div className="rounded-2xl border border-[color:var(--line)] bg-[var(--surface)] p-4 mb-6">
         <h2 className="font-semibold mb-2">Nova peça</h2>
         <div className="flex flex-col gap-3 md:flex-row">
           <input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            className="flex-1 rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-white/10"
+            className="flex-1 rounded-md bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] outline-none ring-1 ring-[color:var(--line)]"
             placeholder="Nome da peça"
           />
-          <button onClick={handleCreatePiece} className="rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900">
+          className="rounded-md bg-[var(--brand)] px-4 py-2 font-medium text-[var(--ink)]"
             Criar
           </button>
         </div>
@@ -356,7 +356,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
       {/* Seleção de peça + total + dossiê */}
       <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm text-slate-300">Peça:</span>
+          <span className="text-sm text-[var(--muted)]">Peça:</span>
           <select
             value={selectedId ?? ''}
             onChange={(e) => setSelectedId(e.target.value || null)}
@@ -384,15 +384,15 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button onClick={handleStart} disabled={running}
                 className="rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900 disabled:opacity-60">Iniciar</button>
               <button onClick={handlePauseOnly} disabled={!running}
-                className="rounded-md bg-slate-700 px-4 py-2 font-medium text-slate-100 disabled:opacity-60">Pausar</button>
+                className="rounded-md bg-[var(--brand-2)]/70 px-4 py-2 font-medium text-white" disabled:opacity-60">Pausar</button>
 
               <button onClick={handleInterrupt} disabled={accMs <= 0}
-                className="rounded-md bg-amber-500 px-4 py-2 font-medium text-slate-900 disabled:opacity-60 col-span-2">
+                className="rounded-md bg-[var(--warning)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2">
                 Registrar pausa (interrupção)
               </button>
 
               <button onClick={handleStageWithPhotoClick} disabled={accMs <= 0}
-                className="rounded-md bg-blue-500/80 px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2">
+                className="rounded-md bg-[var(--accent)]/90 px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2">
                 Finalizar etapa (com foto)
               </button>
 
@@ -408,7 +408,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Ex.: etapa terminada; envio para cliente"
-                className="mt-1 w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10"
+                className="mt-1 w-full rounded-md bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] ring-1 ring-[color:var(--line)]"
               />
             </div>
 
@@ -450,7 +450,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
           <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-4">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-semibold">Histórico</h3>
-              <span className="text-sm text-slate-300">{sessions.length} registro(s)</span>
+              <span className="text-sm text-[var(--muted)]">{sessions.length} registro(s)</span>
             </div>
 
             <div className="grid gap-2">
