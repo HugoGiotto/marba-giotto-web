@@ -459,7 +459,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
                 <option value="cm">cm</option><option value="mm">mm</option><option value="m">m</option><option value="pol">pol</option>
               </select>
               <div className="flex items-center">
-                <button onClick={handleSaveMeasures} className="rounded-md bg-[#3a2216] px-4 py-2 font-medium text-slate-900">Salvar medidas</button>
+                <button onClick={handleSaveMeasures} className="rounded-md bg-[#3a2216] px-4 py-2 font-medium text-white">Salvar medidas</button>
               </div>
             </div>
           </div>
