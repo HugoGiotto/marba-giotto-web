@@ -68,11 +68,14 @@ export default function SignInScreen() {
           />
 
           <button
-            type="submit" disabled={loading}
-            className="w-full rounded-md bg-amber-400 px-4 py-2 font-medium text-stone-950 disabled:opacity-60"
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-md px-4 py-2 font-medium disabled:opacity-60
+                      bg-[var(--accent)] text-[var(--ink-strong)]"
           >
             {loading ? 'Entrando…' : 'Entrar'}
           </button>
+
 
           {/* Sem botão de "Criar conta" por enquanto */}
         </form>

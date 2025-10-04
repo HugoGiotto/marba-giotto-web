@@ -1,25 +1,33 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
+/* Paleta base (terra + oliva + âmbar suave) */
 :root{
-  --bg:#151311;
-  --surface:#1f1b18;
-  --ink:#f4efe9;
-  --muted:#cfc7bd;
+  --bg:#151311;           /* fundo escuro quente */
+  --surface:#1f1b18;      /* cartões/painéis */
+  --ink:#efe9df;          /* texto principal (marfim) */
+  --ink-weak:#cfc7bd;     /* texto secundário */
+  --ink-strong:#1a1714;   /* texto sobre botões claros */
+
   --border:rgba(255,255,255,.08);
-  --accent:#d6b692;
-  --accent-2:#a68b6a;
+
+  /* acentos tirados das referências */
+  --accent:#c99e6c;       /* “honeyed amber” (#C99E6C) */
+  --accent-2:#847c5d;     /* oliva musgo (#847C5D) */
+  --accent-3:#d0c7b8;     /* areia clara (#D0C7B8) */
 }
 
-/* Use estas variáveis */
-html,body{ background:linear-gradient(180deg,#1b1714,#151311 40%,#1b1714); color:var(--ink); }
+/* Fundo com leve gradiente quente */
+html,body{
+  background: linear-gradient(180deg,#1b1714,#151311 40%,#1b1714);
+  color:var(--ink);
+  min-height:100%;
+}
 
-/* remova o bloco que recoloca --background/--foreground,
-   ou defina-os coerentes com a paleta: */
+/* Opcional: coerência com shadcn/next defaults */
 :root{
-  --background: transparent;  /* já usamos o gradient acima */
+  --background: transparent;
   --foreground: var(--ink);
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
+body { font-family: Arial, Helvetica, sans-serif; }

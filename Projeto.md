@@ -139,3 +139,35 @@ truncate table public.measurements  restart identity cascade;
 truncate table public.pieces        restart identity cascade;
 
 commit;
+
+
+===============
+
+@import "tailwindcss";
+
+:root{
+  --bg:#151311;
+  --surface:#1f1b18;
+  --ink:#f4efe9;
+  --muted:#cfc7bd;
+  --border:rgba(255,255,255,.08);
+  --accent:#d6b692;
+  --accent-2:#a68b6a;
+}
+
+/* Use estas variáveis */
+html,body{ background:linear-gradient(180deg,#1b1714,#151311 40%,#1b1714); color:var(--ink); }
+
+/* remova o bloco que recoloca --background/--foreground,
+   ou defina-os coerentes com a paleta: */
+:root{
+  --background: transparent;  /* já usamos o gradient acima */
+  --foreground: var(--ink);
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+===============
