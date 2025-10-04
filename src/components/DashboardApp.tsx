@@ -368,9 +368,11 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
           >
             {pieces.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
-          <div className="ml-auto text-sm text-slate-300">
-            Total acumulado: <span className="font-semibold text-[var(--muted)]">{fmtHMS(totalMs)}</span>
+          <div className="ml-auto text-sm text-[var(--muted)]">
+            Total acumulado:{' '}
+            <span className="font-semibold text-[var(--ink)]">{fmtHMS(totalMs)}</span>
           </div>
+
           <button onClick={openDossier} className="rounded-md border border-white/15 px-3 py-2 text-sm">
             Dossiê (imprimir)
           </button>
@@ -382,13 +384,15 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
           {/* Timer */}
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
             <h3 className="mb-2 font-semibold">Tempo da sessão</h3>
-            <div className="text-4xl font-extrabold tabular-nums">{fmtHMS(accMs)}</div>
+            <div className="text-4xl font-extrabold tabular-nums text-[var(--ink)]">
+              {fmtHMS(accMs)}
+            </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button
                 onClick={handleStart}
                 disabled={running}
-                className="rounded-md bg-[#b6b5a2] px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
+                className="rounded-md bg-[#94a593] px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
               >
                 Iniciar
               </button>
@@ -396,10 +400,11 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={handlePauseOnly}
                 disabled={!running}
-                className="rounded-md bg-[var(--brand-2)]/70 px-4 py-2 font-medium text-white disabled:opacity-60"
+                className="rounded-md bg-[#5e6766] px-4 py-2 font-medium text-white disabled:opacity-60"
               >
                 Pausar
               </button>
+
 
               <button
                 onClick={handleInterrupt}
