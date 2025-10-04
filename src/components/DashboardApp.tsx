@@ -388,7 +388,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={handleStart}
                 disabled={running}
-                className="rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
+                className="rounded-md bg-[#a7a896] px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
               >
                 Iniciar
               </button>
