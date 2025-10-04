@@ -385,23 +385,43 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
             <div className="text-4xl font-extrabold tabular-nums">{fmtHMS(accMs)}</div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
-              <button onClick={handleStart} disabled={running}
-                className="rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900 disabled:opacity-60">Iniciar</button>
-              <button onClick={handlePauseOnly} disabled={!running}
-                className="rounded-md bg-[var(--brand-2)]/70 px-4 py-2 font-medium text-white" disabled:opacity-60">Pausar</button>
+              <button
+                onClick={handleStart}
+                disabled={running}
+                className="rounded-md bg-emerald-500 px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
+              >
+                Iniciar
+              </button>
 
-              <button onClick={handleInterrupt} disabled={accMs <= 0}
-                className="rounded-md bg-[var(--warning)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2">
+              <button
+                onClick={handlePauseOnly}
+                disabled={!running}
+                className="rounded-md bg-[var(--brand-2)]/70 px-4 py-2 font-medium text-white disabled:opacity-60"
+              >
+                Pausar
+              </button>
+
+              <button
+                onClick={handleInterrupt}
+                disabled={accMs <= 0}
+                className="rounded-md bg-[var(--warning)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2"
+              >
                 Registrar pausa (interrupção)
               </button>
 
-              <button onClick={handleStageWithPhotoClick} disabled={accMs <= 0}
-                className="rounded-md bg-[var(--accent)]/90 px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2">
+              <button
+                onClick={handleStageWithPhotoClick}
+                disabled={accMs <= 0}
+                className="rounded-md bg-blue-500/80 px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2"
+              >
                 Finalizar etapa (com foto)
               </button>
 
-              <button onClick={resetTimer} disabled={running || accMs <= 0}
-                className="rounded-md border border-white/15 px-4 py-2 font-medium text-slate-100 disabled:opacity-60 col-span-2">
+              <button
+                onClick={resetTimer}
+                disabled={running || accMs <= 0}
+                className="rounded-md border border-white/15 px-4 py-2 font-medium text-slate-100 disabled:opacity-60 col-span-2"
+              >
                 Zerar contador
               </button>
             </div>
