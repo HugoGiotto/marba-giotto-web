@@ -338,20 +338,24 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
       {/* Nova peça */}
-      <div className="rounded-2xl border border-[color:var(--line)] bg-[var(--surface)] p-4 mb-6">
+      <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 mb-6">
         <h2 className="font-semibold mb-2">Nova peça</h2>
         <div className="flex flex-col gap-3 md:flex-row">
           <input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            className="flex-1 rounded-md bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] outline-none ring-1 ring-[color:var(--line)]"
+            className="flex-1 rounded-md bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] outline-none ring-1 ring-[var(--line)]"
             placeholder="Nome da peça"
           />
-          className="rounded-md bg-[var(--brand)] px-4 py-2 font-medium text-[var(--ink)]"
+          <button
+            onClick={handleCreatePiece}
+            className="rounded-md bg-[var(--brand)] px-4 py-2 font-medium text-[var(--ink)]"
+          >
             Criar
           </button>
         </div>
       </div>
+
 
       {/* Seleção de peça + total + dossiê */}
       <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-4">
