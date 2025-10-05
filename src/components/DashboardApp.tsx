@@ -358,66 +358,79 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
 
 
       {/* Seleção de peça + total + dossiê */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-4">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 mb-4">
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm text-[var(--muted)]">Peça:</span>
           <select
             value={selectedId ?? ''}
             onChange={(e) => setSelectedId(e.target.value || null)}
-            className="min-w-[240px] rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10"
+            className="min-w-[240px] rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-token"
           >
             {pieces.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
+
           <div className="ml-auto text-sm text-[var(--muted)]">
             Total acumulado:{' '}
             <span className="font-semibold text-[var(--ink)]">{fmtHMS(totalMs)}</span>
           </div>
 
-          <button onClick={openDossier} className="rounded-md border border-white/15 px-3 py-2 text-sm">
+          <button onClick={openDossier} className="rounded-md border border-[var(--border)] px-3 py-2 text-sm">
             Dossiê (imprimir)
           </button>
         </div>
       </div>
 
+
       {selected ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Timer */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
             <h3 className="mb-2 font-semibold">Tempo da sessão</h3>
             <div className="text-4xl font-extrabold tabular-nums text-[var(--ink)]">
               {fmtHMS(accMs)}
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
+              
+              {/* Iniciar (#94a593) */}
               <button
                 onClick={handleStart}
                 disabled={running}
-                className="rounded-md bg-[#94a593] px-4 py-2 font-medium text-slate-900 disabled:opacity-60"
+                className="btn"
+                style={{ background: "var(--brand)", color: "#111", opacity: running ? .6 : 1 }}
               >
                 Iniciar
               </button>
 
+              {/* Pausar (#5e6766) */}
               <button
                 onClick={handlePauseOnly}
                 disabled={!running}
-                className="rounded-md bg-[#5e6766] px-4 py-2 font-medium text-white disabled:opacity-60"
+                className="btn"
+                style={{ background: "var(--brand-2)", color: "#fff", opacity: !running ? .6 : 1 }}
               >
                 Pausar
               </button>
 
 
+              {/*  “Total acumulado”
+              <div className="ml-auto text-sm">
+                <span className="muted">Total acumulado: </span>
+                <span className="font-semibold text-[var(--ink)]">{fmtHMS(totalMs)}</span>
+              </div>
+              */}
+
               <button
                 onClick={handleInterrupt}
                 disabled={accMs <= 0}
-                className="rounded-md bg-[var(--warning)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2"
-              >
+                className="rounded-md bg-[var(--warning)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2">
                 Registrar pausa (interrupção)
               </button>
 
               <button
                 onClick={handleStageWithPhotoClick}
                 disabled={accMs <= 0}
-                className="rounded-md bg-[#78563b] px-4 py-2 font-medium text-white disabled:opacity-60 col-span-2"
+                className="rounded-md bg-[#78563b] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2"
               >
                 Finalizar etapa (com foto)
               </button>
@@ -425,20 +438,21 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={resetTimer}
                 disabled={running || accMs <= 0}
-                className="rounded-md border border-white/15 px-4 py-2 font-medium text-slate-100 disabled:opacity-60 col-span-2"
+                className="rounded-md border border-[var(--border)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2"
               >
                 Zerar contador
               </button>
             </div>
 
             <div className="mt-3">
-              <label className="text-sm text-slate-300">Nota (opcional)</label>
+              <label className="text-sm text-[var(--muted)]">Nota (opcional)</label>
               <input
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Ex.: etapa terminada; envio para cliente"
-                className="mt-1 w-full rounded-md bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] ring-1 ring-[color:var(--line)]"
+                className="mt-1 w-full rounded-md bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] ring-token"
               />
+
             </div>
 
             {/* input oculto para câmera/galeria */}
@@ -453,30 +467,30 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
           </div>
 
           {/* Medidas */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
             <h3 className="mb-3 font-semibold">Medidas</h3>
             <div className="grid grid-cols-2 gap-3">
-              <input placeholder="Largura" value={measures.width ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, width: e.target.value as unknown as number | null }))} className="rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10" />
-              <input placeholder="Altura" value={measures.height ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, height: e.target.value as unknown as number | null }))} className="rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10" />
-              <input placeholder="Diâmetro" value={measures.diameter ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, diameter: e.target.value as unknown as number | null }))} className="rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10" />
-              <input placeholder="Comprimento" value={measures.length ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, length: e.target.value as unknown as number | null }))} className="rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10" />
-              <select value={measures.unit} onChange={(e) => setMeasures((s) => ({ ...s, unit: e.target.value as MeasurementUnit }))} className="rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10">
+              <input placeholder="Largura" value={measures.width ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, width: e.target.value as unknown as number | null }))} className="rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-1 ring-token" />
+              <input placeholder="Altura" value={measures.height ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, height: e.target.value as unknown as number | null }))} className="rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-1 ring-token" />
+              <input placeholder="Diâmetro" value={measures.diameter ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, diameter: e.target.value as unknown as number | null }))} className="rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-token" />
+              <input placeholder="Comprimento" value={measures.length ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, length: e.target.value as unknown as number | null }))} className="rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-1 ring-token" />
+              <select value={measures.unit} onChange={(e) => setMeasures((s) => ({ ...s, unit: e.target.value as MeasurementUnit }))} className="rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-1 ring-token">
                 <option value="cm">cm</option><option value="mm">mm</option><option value="m">m</option><option value="pol">pol</option>
               </select>
               <div className="flex items-center">
-                <button onClick={handleSaveMeasures} className="rounded-md bg-[#3a2216] px-4 py-2 font-medium text-white">Salvar medidas</button>
+                <button onClick={handleSaveMeasures} className="rounded-md bg-[#3a2216] px-4 py-2 font-medium text-[var(--ink)]">Salvar medidas</button>
               </div>
             </div>
           </div>
 
           {/* Notas locais */}
-          <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="md:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
             <h3 className="mb-3 font-semibold">Notas / materiais</h3>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full min-h-28 rounded-md bg-slate-900 px-3 py-2 text-slate-100 ring-1 ring-white/10" placeholder="Fio, agulha, referência…"/>
+            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full min-h-28 rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] ring-1 ring-token" placeholder="Fio, agulha, referência…"/>
           </div>
 
           {/* Histórico */}
-          <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="md:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-semibold">Histórico</h3>
               <span className="text-sm text-[var(--muted)]">{sessions.length} registro(s)</span>
@@ -493,18 +507,18 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
                       ? <span className="rounded-full bg-blue-400/20 text-blue-200 px-2 py-0.5 text-xs">Etapa</span>
                       : <span className="rounded-full bg-amber-400/20 text-amber-200 px-2 py-0.5 text-xs">Interrupção</span>;
                   return (
-                    <div key={s.id} className="flex items-start justify-between gap-3 rounded-md bg-slate-900 px-3 py-2 ring-1 ring-white/10">
+                    <div key={s.id} className="flex items-start justify-between gap-3 rounded-md bg-[var(--surface)] px-3 py-2 ring-1 ring-token">
                       <div className="text-sm">
                         <div className="flex items-center gap-2">
                           <b>#{sessions.length - idx}</b> {badge}
-                          <span className="text-slate-300">
+                          <span className="text-[var(--muted)]">
                             {s.start_at ? new Date(s.start_at).toLocaleString() : '—'} → {s.end_at ? new Date(s.end_at).toLocaleString() : '—'}
                           </span>
                         </div>
-                        {s.note && <div className="text-slate-300 mt-1">{s.note}</div>}
+                        {s.note && <div className="text-[var(--muted)] mt-1">{s.note}</div>}
                         {s.photo_url && (
                           <a href={s.photo_url} target="_blank" rel="noreferrer">
-                            <img src={s.photo_url} alt="foto da etapa" className="mt-2 max-h-28 rounded border border-white/10"/>
+                            <img src={s.photo_url} alt="foto da etapa" className="mt-2 max-h-28 rounded border border-[var(--border)]"/>
                           </a>
                         )}
                       </div>
@@ -512,12 +526,12 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
                     </div>
                   );
                 })}
-              {!sessions.length && <div className="text-sm text-slate-300">Sem registros ainda.</div>}
+              {!sessions.length && <div className="text-sm text-[var(--muted)]">Sem registros ainda.</div>}
             </div>
           </div>
         </div>
       ) : (
-        <div className="text-slate-300">Crie uma peça para começar.</div>
+        <div className="text-[var(--muted)]">Crie uma peça para começar.</div>
       )}
     </div>
   );
