@@ -342,18 +342,16 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
         <h2 className="font-semibold mb-2">Nova peça</h2>
         <div className="flex flex-col gap-3 md:flex-row">
           <input
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          className="input flex-1"
-          placeholder="Nome da peça"
-        />
-        <button onClick={handleCreatePiece} className="btn btn-start">Criar</button>
-
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            className="input flex-1"
+            placeholder="Nome da peça"
+          />
+          <button onClick={handleCreatePiece} className="btn btn-start">
             Criar
           </button>
         </div>
       </div>
-
 
       {/* Seleção de peça + total + dossiê */}
       <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 mb-4">
@@ -419,7 +417,7 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={handleStageWithPhotoClick}
                 disabled={accMs <= 0}
-                className="btn btn-neutral col-span-2"
+                className="btn btn-stage col-span-2"
               >
                 Finalizar etapa (com foto)
               </button>

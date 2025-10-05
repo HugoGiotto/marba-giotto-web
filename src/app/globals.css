@@ -104,6 +104,10 @@
   .btn-outline:hover {
     box-shadow: inset 0 0 0 2px var(--brand);
   }
+
+  /* Botão “Finalizar etapa” (marrom) */
+  .btn-stage { background: #78563b; color: var(--ink); }
+
 }
 
 /* texto “muted” */
