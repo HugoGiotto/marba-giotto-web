@@ -46,20 +46,34 @@ export default function SignInScreen() {
           {err && <p className="mb-3 text-sm" style={{color:'#e66'}}>{err}</p>}
 
           <label className="mb-1 block text-sm text-[var(--muted)]">E-mail</label>
-          <input type="email" value={email} onChange={e=>setEmail(e.target.value)}
-                 className="mb-3 w-full rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] outline-none ring-token"
-                 placeholder="voce@email.com" autoComplete="email" />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input mb-3 w-full"
+            placeholder="voce@email.com"
+            autoComplete="email"
+          />
 
           <label className="mb-1 block text-sm text-[var(--muted)]">Senha</label>
-          <input type="password" value={password} onChange={e=>setPassword(e.target.value)}
-                 className="mb-6 w-full rounded-md bg-[var(--surface)] px-3 py-2 text-[var(--ink)] outline-none ring-token"
-                 placeholder="••••••••" autoComplete="current-password" />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input mb-6 w-full"
+            placeholder="••••••••"
+            autoComplete="current-password"
+          />
 
-          <button type="submit" disabled={loading}
-                  className="btn w-full"
-                  style={{ background:"var(--brand)", color:"#111", opacity:loading? .6:1 }}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-start w-full"
+            aria-busy={loading}
+          >
             {loading ? 'Entrando…' : 'Entrar'}
           </button>
+
           {/* sem botão "Criar conta" por enquanto */}
         </form>
       </div>

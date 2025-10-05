@@ -1,83 +1,92 @@
-@import "tailwindcss";
+@layer base {
+  /* --- Defaults (escuro) --- */
+  :root {
+    --bg:#151311;
+    --surface:#1f1b18;
+    --surface-2:#191613;
+    --ink:#f4efe9;
+    --muted:#cfc7bd;
+    --line:rgba(255,255,255,.08);
 
-/* ── Tokens base (NOMES FIXOS) ─────────────────────────────────────────────── */
-:root {
-  /* valores “fallback” caso o data-theme não esteja setado ainda */
-  --bg-grad-1:#F2ECE4;
-  --bg-grad-2:#E7DED3;
-  --bg:#EFE5DA;
-  --surface:#F4EADF;
-  --ink:#2D2612;
-  --muted:#8C7F73;
-  --border:rgba(45,38,18,.12);
-  --brand:#94A593;      /* ação positiva */
-  --brand-2:#5E6766;    /* ação neutra/pausa */
-  --warning:#A36F3A;    /* interrupção */
+    --brand:#94a593;     /* Iniciar */
+    --brand-2:#5e6766;   /* Pausar  */
+    --warning:#b89169;
+
+    /* Campos editáveis */
+    --field:#0f0d0c;     /* fundo dos inputs no tema escuro */
+    --field-ink:#f4efe9; /* texto dos inputs no tema escuro */
+  }
+
+  /* --- Tema Crochê --- */
+  :root[data-theme="croche"]{
+    --bg:#ede4d7;
+    --surface:#e6dccf;
+    --surface-2:#f0e7db;
+    --ink:#1f1a16;
+    --muted:#7c6e5d;
+    --line:rgba(52,35,24,.25);
+
+    --brand:#94a593;
+    --brand-2:#5e6766;
+    --warning:#b89169;
+
+    /* Campos BRANCOS neste tema */
+    --field:#ffffff;
+    --field-ink:#2b221b;
+  }
+
+  /* --- Tema Escuro --- */
+  :root[data-theme="escuro"]{
+    /* mantém os defaults do :root */
+  }
+
+  /* --- Tema Sálvia --- */
+  :root[data-theme="salvia"]{
+    --bg:#e9ece7;
+    --surface:#e3e7e1;
+    --surface-2:#eef1ec;
+    --ink:#26302b;
+    --muted:#6d756f;
+    --line:rgba(25,33,30,.18);
+
+    --brand:#94a593;
+    --brand-2:#5e6766;
+    --warning:#a98a6a;
+
+    /* Campos também brancos aqui */
+    --field:#ffffff;
+    --field-ink:#252a28;
+  }
+
+  html,body{
+    background: var(--bg);
+    color: var(--ink);
+  }
 }
 
-/* ── Tema 1: “crochê” (claro, o que você gostou) ──────────────────────────── */
-:root[data-theme="croche"]{
-  --bg-grad-1:#F2ECE4;
-  --bg-grad-2:#E7DED3;
-  --bg:#EFE5DA;
-  --surface:#F4EADF;
-  --ink:#2D2612;
-  --muted:#8C7F73;
-  --border:rgba(45,38,18,.12);
-  --brand:#94A593;
-  --brand-2:#5E6766;
-  --warning:#A36F3A;
-}
-
-/* ── Tema 2: “dark” (o anterior) ──────────────────────────────────────────── */
-:root[data-theme="dark"]{
-  --bg-grad-1:#171412;
-  --bg-grad-2:#151311;
-  --bg:#151311;
-  --surface:#1D1A17;
-  --ink:#F5EFE7;
-  --muted:#CBBDAF;
-  --border:rgba(255,255,255,.08);
-  --brand:#94A593;
-  --brand-2:#5E6766;
-  --warning:#A36F3A;
-}
-
-/* ── Tema 3: “sálvia” (inspirado nas paletas verde/ivory) ─────────────────── */
-:root[data-theme="salvia"]{
-  --bg-grad-1:#F5F3EF;
-  --bg-grad-2:#ECE8E0;
-  --bg:#F1EEE7;
-  --surface:#F7F5F0;
-  --ink:#1E1D1B;
-  --muted:#9FA19C;      /* cinza-esverdeado suave */
-  --border:rgba(30,29,27,.08);
-  --brand:#667063;
-  --brand-2:#29352A;
-  --warning:#A37E66;
-}
-
-/* ── Base global usando os tokens ─────────────────────────────────────────── */
-html,body{
-  background: linear-gradient(180deg,var(--bg-grad-1),var(--bg-grad-2));
-  color: var(--ink);
-}
-
-body{ font-family: Arial, Helvetica, sans-serif; }
-
-/* Inputs e cartões ficam bonitos em todos os temas */
 @layer components {
-  .card {
-    @apply rounded-2xl border p-4;
-    border-color: var(--border);
-    background: var(--surface);
+  /* linha/ring consistente com a paleta */
+  .ring-token { box-shadow: inset 0 0 0 1px var(--line); }
+  .ring-token:focus-within { box-shadow: inset 0 0 0 2px var(--brand); }
+
+  /* Campo editável padrão (input/select/textarea) */
+  .input {
+    @apply rounded-md px-3 py-2 outline-none;
+    background: var(--field);
+    color: var(--field-ink);
+    box-shadow: inset 0 0 0 1px var(--line);
   }
-  .btn {
-    @apply rounded-md px-4 py-2 font-medium;
-  }
-  .btn-brand   { background: var(--brand);   color: #111; }
-  .btn-neutral { background: var(--brand-2); color: #fff; }
-  .btn-warn    { background: var(--warning); color: var(--ink); }
-  .ring-token  { box-shadow: 0 0 0 1px var(--border) inset; }
-  .muted       { color: var(--muted); }
+  .input:focus { box-shadow: inset 0 0 0 2px var(--brand); }
+
+  /* Botão base + variantes */
+  .btn { @apply rounded-md px-4 py-2 font-medium; }
+  .btn[disabled] { @apply opacity-60 cursor-not-allowed; }
+
+  .btn-start   { background: var(--brand);   color:#111; }
+  .btn-pause   { background: var(--brand-2); color:#fff; }
+  .btn-warn    { background: var(--warning); color:var(--ink); }
+  .btn-neutral { background: var(--surface-2); color:var(--ink); }
 }
+
+/* texto “muted” */
+.muted{ color: var(--muted); }
