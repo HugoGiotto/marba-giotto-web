@@ -342,15 +342,13 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
         <h2 className="font-semibold mb-2">Nova peça</h2>
         <div className="flex flex-col gap-3 md:flex-row">
           <input
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            className="input flex-1"
-            placeholder="Nome da peça"
-         />
-          <button
-            onClick={handleCreatePiece}
-            className="rounded-md bg-[var(--brand)] px-4 py-2 font-medium text-[var(--ink)]"
-          >
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          className="input flex-1"
+          placeholder="Nome da peça"
+        />
+        <button onClick={handleCreatePiece} className="btn btn-start">Criar</button>
+
             Criar
           </button>
         </div>
@@ -362,21 +360,22 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm text-[var(--muted)]">Peça:</span>
           <select
-             value={selectedId ?? ''}
-             onChange={(e) => setSelectedId(e.target.value || null)}
-             className="input min-w-[240px]"
+            value={selectedId ?? ''}
+            onChange={(e) => setSelectedId(e.target.value || null)}
+            className="input min-w-[240px]"
           >
             {pieces.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
 
-          <div className="ml-auto text-sm text-[var(--muted)]">
+          <div className="ml-auto text-sm muted">
             Total acumulado:{' '}
             <span className="font-semibold text-[var(--ink)]">{fmtHMS(totalMs)}</span>
           </div>
 
-          <button onClick={openDossier} className="rounded-md border border-[var(--line)] px-3 py-2 text-sm">
+          <button onClick={openDossier} className="btn btn-outline text-sm px-3 py-2">
             Dossiê (imprimir)
           </button>
+
         </div>
       </div>
 
@@ -391,7 +390,6 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
-              
               {/* Iniciar (#94a593) */}
               <button
                 onClick={handleStart}
@@ -410,25 +408,18 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
                 Pausar
               </button>
 
-
-              {/*  “Total acumulado”
-              <div className="ml-auto text-sm">
-                <span className="muted">Total acumulado: </span>
-                <span className="font-semibold text-[var(--ink)]">{fmtHMS(totalMs)}</span>
-              </div>
-              */}
-
               <button
                 onClick={handleInterrupt}
                 disabled={accMs <= 0}
-                className="rounded-md bg-[var(--warning)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2">
+                className="btn btn-warn col-span-2"
+              >
                 Registrar pausa (interrupção)
               </button>
 
               <button
                 onClick={handleStageWithPhotoClick}
                 disabled={accMs <= 0}
-                className="rounded-md bg-[#78563b] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2"
+                className="btn btn-neutral col-span-2"
               >
                 Finalizar etapa (com foto)
               </button>
@@ -436,19 +427,20 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
               <button
                 onClick={resetTimer}
                 disabled={running || accMs <= 0}
-                className="rounded-md border border-[var(--line)] px-4 py-2 font-medium text-[var(--ink)] disabled:opacity-60 col-span-2"
+                className="btn btn-outline col-span-2"
               >
                 Zerar contador
               </button>
             </div>
 
+
             <div className="mt-3">
-              <label className="text-sm text-[var(--muted)]">Nota (opcional)</label>
+              <label className="text-sm muted">Nota (opcional)</label>
               <input
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  placeholder="Ex.: etapa terminada; envio para cliente"
-                  className="input mt-1 w-full"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="Ex.: etapa terminada; envio para cliente"
+                className="input mt-1 w-full"
               />
             </div>
 
@@ -467,23 +459,38 @@ export default function DashboardApp({ userId: userIdProp }: DashboardAppProps) 
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
             <h3 className="mb-3 font-semibold">Medidas</h3>
             <div className="grid grid-cols-2 gap-3">
-              <input placeholder="Largura" value={measures.width ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, width: e.target.value as unknown as number | null }))} className="input" />
-              <input placeholder="Altura" value={measures.height ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, height: e.target.value as unknown as number | null }))} className="input" />
-              <input placeholder="Diâmetro" value={measures.diameter ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, diameter: e.target.value as unknown as number | null }))} className="input" />
-              <input placeholder="Comprimento" value={measures.length ?? ''} onChange={(e) => setMeasures((s) => ({ ...s, length: e.target.value as unknown as number | null }))} className="input" />
-              <select value={measures.unit} onChange={(e) => setMeasures((s) => ({ ...s, unit: e.target.value as MeasurementUnit }))} className="input" />
-                <option value="cm">cm</option><option value="mm">mm</option><option value="m">m</option><option value="pol">pol</option>
+              <input placeholder="Largura"      value={measures.width ?? ''}     onChange={(e)=>setMeasures(s=>({...s,width:e.target.value as unknown as number|null}))}  className="input" />
+              <input placeholder="Altura"       value={measures.height ?? ''}    onChange={(e)=>setMeasures(s=>({...s,height:e.target.value as unknown as number|null}))} className="input" />
+              <input placeholder="Diâmetro"     value={measures.diameter ?? ''}  onChange={(e)=>setMeasures(s=>({...s,diameter:e.target.value as unknown as number|null}))} className="input" />
+              <input placeholder="Comprimento"  value={measures.length ?? ''}    onChange={(e)=>setMeasures(s=>({...s,length:e.target.value as unknown as number|null}))}   className="input" />
+
+              <select
+                value={measures.unit}
+                onChange={(e)=>setMeasures(s=>({...s,unit:e.target.value as MeasurementUnit}))}
+                className="input"
+              >
+                <option value="cm">cm</option>
+                <option value="mm">mm</option>
+                <option value="m">m</option>
+                <option value="pol">pol</option>
               </select>
+
               <div className="flex items-center">
-                <button onClick={handleSaveMeasures} className="rounded-md bg-[#3a2216] px-4 py-2 font-medium text-[var(--ink)]">Salvar medidas</button>
+                <button onClick={handleSaveMeasures} className="btn btn-outline">Salvar medidas</button>
               </div>
+
             </div>
           </div>
 
           {/* Notas locais */}
           <div className="md:col-span-2 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
             <h3 className="mb-3 font-semibold">Notas / materiais</h3>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="input w-full min-h-28" placeholder="Fio, agulha, referência…"/>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="input w-full min-h-28"
+              placeholder="Fio, agulha, referência…"
+            />
           </div>
 
           {/* Histórico */}

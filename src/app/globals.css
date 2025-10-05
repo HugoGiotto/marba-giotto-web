@@ -71,7 +71,9 @@
 
   /* Campo editável padrão (input/select/textarea) */
   .input {
-    @apply rounded-md px-3 py-2 outline-none;
+    border-radius: 0.375rem;             /* rounded-md */
+    padding: 0.5rem 0.75rem;             /* px-3 py-2 */
+    outline: none;
     background: var(--field);
     color: var(--field-ink);
     box-shadow: inset 0 0 0 1px var(--line);
@@ -79,14 +81,30 @@
   .input:focus { box-shadow: inset 0 0 0 2px var(--brand); }
 
   /* Botão base + variantes */
-  .btn { @apply rounded-md px-4 py-2 font-medium; }
-  .btn[disabled] { @apply opacity-60 cursor-not-allowed; }
+  .btn {
+    border-radius: 0.375rem;             /* rounded-md */
+    padding: 0.5rem 1rem;                /* px-4 py-2 */
+    font-weight: 500;                    /* font-medium */
+    transition: box-shadow .15s ease, opacity .15s ease, transform .02s ease;
+  }
+  .btn[disabled] { opacity: .6; cursor: not-allowed; }
 
   .btn-start   { background: var(--brand);   color:#111; }
   .btn-pause   { background: var(--brand-2); color:#fff; }
   .btn-warn    { background: var(--warning); color:var(--ink); }
   .btn-neutral { background: var(--surface-2); color:var(--ink); }
+
+  /* Para o “Zerar contador” com contorno */
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .btn-outline:focus,
+  .btn-outline:hover {
+    box-shadow: inset 0 0 0 2px var(--brand);
+  }
 }
 
 /* texto “muted” */
-.muted{ color: var(--muted); }
+.muted { color: var(--muted); }
